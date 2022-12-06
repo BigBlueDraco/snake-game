@@ -14,9 +14,12 @@ import {
   StyledGameBord,
   StyledSnakeCell,
 } from "./GameBoard.styled";
+import { ModalWindowWraper } from "../modalWindowWraper/modalWindowWraper";
+import { PauseWindow } from "../PauseWindow/PauseWindow";
 
 const BOARD_SIZE = 10;
-const BASE_SPEED = 600;
+const BASE_SPEED = 400;
+const BASE_DIRECTION = "down";
 const directionFromKey = (key = "") => {
   switch (key.toString().toLowerCase()) {
     case "w":
@@ -65,9 +68,10 @@ export const GameBoard = () => {
   const [snake, setSnake] = useState([...START_SNAKE]);
   const [food, setFood] = useState(createFood(BOARD_SIZE));
   const [score, setScore] = useState(0);
-  const [dir, setDirection] = useState("down");
+  const [dir, setDirection] = useState(BASE_DIRECTION);
   const [speed, setSpeed] = useState(BASE_SPEED);
-  const [isPaused, setIsPaused] = useState("true");
+  const [isPaused, setIsPaused] = useState(true);
+  const [isGameOver, setIsGameOver] = useState(false);
   const spawnFood = () => {
     const newSnake = moveSnake();
     let newFood = createFood(BOARD_SIZE);
@@ -87,11 +91,17 @@ export const GameBoard = () => {
       document.body.style.overflow = "auto";
     };
   });
-
+  const reset = () => {
+    setSnake([...START_SNAKE]);
+    setDirection(BASE_DIRECTION);
+    setScore(0);
+  };
   useEffect(() => {
     if (snakeEatItSeff(snake) || snakeISOoutOfBounce(snake, BOARD_SIZE)) {
       setSnake([...START_SNAKE]);
+      setDirection(BASE_DIRECTION);
       setScore(0);
+      setIsPaused(true);
       return;
     }
     if (
@@ -139,6 +149,15 @@ export const GameBoard = () => {
 
   return (
     <>
+      {isPaused && (
+        <PauseWindow
+          closeWindow={tonglePause}
+          restart={() => {
+            reset();
+            tonglePause();
+          }}
+        />
+      )}
       <ScoreBar>{score}</ScoreBar>
       <button onClick={tonglePause}>Pause</button>
       <StyledGameBord>
