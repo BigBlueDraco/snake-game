@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Snake } from "../../utils/Snake";
+import { moveSnake, Snake } from "../../utils/Snake";
 import {
   StyledBordCell,
   StyledGameBord,
@@ -45,49 +45,55 @@ const createBoard = (BOARD_SIZE) => {
 
 export const GameBoard = () => {
   const [board, setBoard] = useState(createBoard(10));
-  const [snake, setSnake] = useState(new Snake(0, 0));
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleMove);
-    return () => {
-      window.removeEventListener("keydown", handleMove);
-      document.body.style.overflow = "auto";
-    };
-  });
+  // const [snake, setSnake] = useState(new Snake(0, 0));
+  console.log(moveSnake([{ cord: { x: 0, y: 0 }, dir: "left" }], "down"));
+  const [food, setFood] = useState({ x: 5, y: 0 });
+
+  // useEffect(() => {
+  //   document.body.style.overflow = "hidden";
+  //   window.addEventListener("keydown", handleMove);
+  //   return () => {
+  //     window.removeEventListener("keydown", handleMove);
+  //     document.body.style.overflow = "auto";
+  //   };
+  // });
+  // useEffect(() => {
+  //   if (snake.head.val.x === food.x && snake.head.val.y === food.y) {
+  //     const newTailCell = snake.grow();
+  //     console.log(newTailCell);
+  //     snakeCells.add(`${newTailCell.val.x}${newTailCell.val.y}`);
+  //     console.log("FOOOOOOOOD");
+  //   }
+  // }, [snake]);
+
+  const cellType = (columnIndex, rowIndex) => {
+    // if () return "snake";
+    // if (food.x === columnIndex && food.y === rowIndex) return "food";
+  };
 
   const handleMove = (e) => {
-    const direction = directionFromKey(e.key);
-    const { x, y } = snake.move(direction);
-    const newSnake = new Snake(x, y);
-    setSnake(newSnake);
+    // const direction = directionFromKey(e.key);
+    // const { x, y } = snake.move(direction);
+    // const newSnake = new Snake(x, y);
+    // const newSnakeCell = new Set(snakeCells);
+    // snakeCells.delete(`${snake.head.val.x}${snake.head.val.y}`);
+    // snakeCells.add(`${newSnake.head.val.x}${newSnake.head.val.y}`);
+    // setSnake(newSnake);
   };
+
   return (
     <>
-      <button
-        onClick={() => {
-          const { x, y } = snake.move("left");
-          const newSnake = new Snake(x, y);
-          setSnake(newSnake);
-        }}
-      >
-        Move
-      </button>
       <StyledGameBord onKeyDown={handleMove}>
         {board.map((row, columnIndex) => (
           <div key={columnIndex}>
-            {row.map((cellValue, rowIndex) => {
-              if (
-                snake.head.val.x === columnIndex &&
-                snake.head.val.y === rowIndex
-              ) {
-                return <StyledSnakeCell></StyledSnakeCell>;
-              }
-              return (
-                <StyledBordCell key={rowIndex}>
-                  {columnIndex} {rowIndex}
-                </StyledBordCell>
-              );
-            })}
+            {row.map((cellValue, rowIndex) => (
+              <StyledBordCell
+                type={cellType(columnIndex, rowIndex)}
+                key={rowIndex}
+              >
+                {columnIndex} {rowIndex}
+              </StyledBordCell>
+            ))}
           </div>
         ))}
       </StyledGameBord>
