@@ -6,6 +6,7 @@ import {
   snakeEatItSeff,
   snakeISOoutOfBounce,
 } from "../../utils/Snake";
+import { ScoreBar } from "../ScoreBar/ScoreBar";
 import {
   StyledBordCell,
   StyledGameBord,
@@ -56,14 +57,11 @@ export const GameBoard = () => {
   const START_SNAKE = [
     { cord: { x: 0, y: 0 }, dir: "down" },
     { cord: { x: 0, y: 1 }, dir: "down" },
-    { cord: { x: 0, y: 2 }, dir: "down" },
-    { cord: { x: 0, y: 3 }, dir: "down" },
-    { cord: { x: 0, y: 4 }, dir: "down" },
   ];
   const [board, setBoard] = useState(createBoard(BOARD_SIZE));
   const [snake, setSnake] = useState([...START_SNAKE]);
   console.log([...START_SNAKE]);
-  const [food, setFood] = useState({ x: 5, y: 5 });
+  const [food, setFood] = useState({ x: 5, y: 5, cost: 1 });
   const [score, setScore] = useState(0);
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -76,6 +74,7 @@ export const GameBoard = () => {
   useEffect(() => {
     if (snakeEatItSeff(snake) || snakeISOoutOfBounce(snake, BOARD_SIZE)) {
       setSnake([...START_SNAKE]);
+      setScore(0);
       return;
     }
     if (
@@ -83,8 +82,8 @@ export const GameBoard = () => {
       snake[snake.length - 1].cord.y === food.y
     ) {
       setSnake((prevSnake) => growSnake(prevSnake));
-      setScore((prev) => prev + 1);
-      setFood({ x: 2, y: 3 });
+      setScore((prev) => prev + food.cost);
+      setFood({ x: 2, y: 3, cost: 20 });
     }
   }, [snake]);
 
@@ -105,6 +104,7 @@ export const GameBoard = () => {
 
   return (
     <>
+      <ScoreBar>{score}</ScoreBar>
       <StyledGameBord onKeyDown={handleMove}>
         {board.map((row, columnIndex) => (
           <div key={columnIndex}>
