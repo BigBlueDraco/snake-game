@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+import { createFood } from "../../utils/Food";
 import {
   growSnake,
   moveSnake,
-  Snake,
   snakeEatItSeff,
   snakeISOoutOfBounce,
 } from "../../utils/Snake";
+
+import useInterval from "use-interval";
 import { ScoreBar } from "../ScoreBar/ScoreBar";
 import {
   StyledBordCell,
@@ -13,7 +15,7 @@ import {
   StyledSnakeCell,
 } from "./GameBoard.styled";
 
-const BOARD_SIZE = 10;
+const BOARD_SIZE = 5;
 const directionFromKey = (key = "") => {
   switch (key.toString().toLowerCase()) {
     case "w":
@@ -60,17 +62,29 @@ export const GameBoard = () => {
   ];
   const [board, setBoard] = useState(createBoard(BOARD_SIZE));
   const [snake, setSnake] = useState([...START_SNAKE]);
-  console.log([...START_SNAKE]);
-  const [food, setFood] = useState({ x: 5, y: 5, cost: 1 });
+  const [food, setFood] = useState(createFood(BOARD_SIZE));
   const [score, setScore] = useState(0);
+  const [dir, setDirection] = useState("down");
+  console.log(dir);
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleMove);
+    window.addEventListener("keydown", moveControl);
     return () => {
-      window.removeEventListener("keydown", handleMove);
+      window.removeEventListener("keydown", moveControl);
       document.body.style.overflow = "auto";
     };
   });
+  const spawnFood = () => {
+    const newSnake = moveSnake();
+    let newFood = createFood(BOARD_SIZE);
+    if (
+      snake.some(({ cord: { x, y } }) => x === newFood.x && y === newFood.y)
+    ) {
+      newFood = spawnFood();
+    }
+    console.log(newFood);
+    return newFood;
+  };
   useEffect(() => {
     if (snakeEatItSeff(snake) || snakeISOoutOfBounce(snake, BOARD_SIZE)) {
       setSnake([...START_SNAKE]);
@@ -83,9 +97,13 @@ export const GameBoard = () => {
     ) {
       setSnake((prevSnake) => growSnake(prevSnake));
       setScore((prev) => prev + food.cost);
-      setFood({ x: 2, y: 3, cost: 20 });
+      setFood(spawnFood());
     }
   }, [snake]);
+  useInterval(() => {
+    console.log("interval");
+    setSnake((prevSnake) => moveSnake(prevSnake, dir));
+  }, 500);
 
   const cellType = (columnIndex, rowIndex) => {
     if (
@@ -96,16 +114,19 @@ export const GameBoard = () => {
       return "snake";
     if (food.x === columnIndex && food.y === rowIndex) return "food";
   };
-
-  const handleMove = (e) => {
+  const moveControl = (e) => {
     const direction = directionFromKey(e.key);
-    setSnake((prevSnake) => moveSnake(prevSnake, direction));
+    direction && setDirection(direction);
   };
 
   return (
     <>
       <ScoreBar>{score}</ScoreBar>
-      <StyledGameBord onKeyDown={handleMove}>
+      <StyledGameBord
+        onKeyDown={(e) => {
+          moveControl(e);
+        }}
+      >
         {board.map((row, columnIndex) => (
           <div key={columnIndex}>
             {row.map((cellValue, rowIndex) => (
