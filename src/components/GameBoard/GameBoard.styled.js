@@ -9,13 +9,13 @@ export const StyledBordCell = styled("div")`
   align-content: center;
   justify-content: center;
   align-items: center;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   border: solid 1px blue;
   ${(p) => {
     switch (p.type) {
       case "snake":
-        return "background: green;";
+        return "background: green; border-radius: 100%";
       case "food":
         return "background: red;";
     }
