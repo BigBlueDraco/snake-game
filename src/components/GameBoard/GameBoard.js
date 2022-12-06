@@ -15,7 +15,8 @@ import {
   StyledSnakeCell,
 } from "./GameBoard.styled";
 
-const BOARD_SIZE = 5;
+const BOARD_SIZE = 10;
+const BASE_SPEED = 600;
 const directionFromKey = (key = "") => {
   switch (key.toString().toLowerCase()) {
     case "w":
@@ -65,15 +66,8 @@ export const GameBoard = () => {
   const [food, setFood] = useState(createFood(BOARD_SIZE));
   const [score, setScore] = useState(0);
   const [dir, setDirection] = useState("down");
-  console.log(dir);
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", moveControl);
-    return () => {
-      window.removeEventListener("keydown", moveControl);
-      document.body.style.overflow = "auto";
-    };
-  });
+  const [speed, setSpeed] = useState(BASE_SPEED);
+  const [isPaused, setIsPaused] = useState("true");
   const spawnFood = () => {
     const newSnake = moveSnake();
     let newFood = createFood(BOARD_SIZE);
@@ -85,6 +79,15 @@ export const GameBoard = () => {
     console.log(newFood);
     return newFood;
   };
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", moveControl);
+    return () => {
+      window.removeEventListener("keydown", moveControl);
+      document.body.style.overflow = "auto";
+    };
+  });
+
   useEffect(() => {
     if (snakeEatItSeff(snake) || snakeISOoutOfBounce(snake, BOARD_SIZE)) {
       setSnake([...START_SNAKE]);
@@ -100,10 +103,15 @@ export const GameBoard = () => {
       setFood(spawnFood());
     }
   }, [snake]);
-  useInterval(() => {
-    console.log("interval");
-    setSnake((prevSnake) => moveSnake(prevSnake, dir));
-  }, 500);
+
+  useInterval(
+    () => {
+      console.log("interval");
+      setSnake((prevSnake) => moveSnake(prevSnake, dir));
+      speedController();
+    },
+    isPaused ? null : speed
+  );
 
   const cellType = (columnIndex, rowIndex) => {
     if (
@@ -114,28 +122,33 @@ export const GameBoard = () => {
       return "snake";
     if (food.x === columnIndex && food.y === rowIndex) return "food";
   };
+
   const moveControl = (e) => {
     const direction = directionFromKey(e.key);
     direction && setDirection(direction);
   };
 
+  const speedController = () => {
+    const dificulty = BASE_SPEED - Math.round(score / 50) * 100;
+    setSpeed(dificulty);
+  };
+
+  const tonglePause = () => {
+    setIsPaused((prev) => !prev);
+  };
+
   return (
     <>
       <ScoreBar>{score}</ScoreBar>
-      <StyledGameBord
-        onKeyDown={(e) => {
-          moveControl(e);
-        }}
-      >
+      <button onClick={tonglePause}>Pause</button>
+      <StyledGameBord>
         {board.map((row, columnIndex) => (
           <div key={columnIndex}>
             {row.map((cellValue, rowIndex) => (
               <StyledBordCell
                 type={cellType(columnIndex, rowIndex)}
                 key={rowIndex}
-              >
-                {columnIndex} {rowIndex}
-              </StyledBordCell>
+              ></StyledBordCell>
             ))}
           </div>
         ))}

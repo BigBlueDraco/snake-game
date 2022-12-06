@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const StyledGameBord = styled("div")`
   display: flex;
+  border: solid 30px blue;
 `;
 
 export const StyledBordCell = styled("div")`
@@ -15,7 +16,7 @@ export const StyledBordCell = styled("div")`
   ${(p) => {
     switch (p.type) {
       case "snake":
-        return "background: green; border-radius: 100%";
+        return "background: green; border-radius: 100%; border-color: transparent";
       case "food":
         return "background: red;";
     }
