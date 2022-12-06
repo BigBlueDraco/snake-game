@@ -51,9 +51,7 @@ export const moveSnake = (snake = [], direction) => {
 };
 export const growSnake = (snake = []) => {
   const { cord, dir } = snake[0];
-  console.log(snake[0]);
   const newDir = oportunityDirection(dir);
-  console.log(newDir);
   const newSnakeNode = { cord, dir };
   newSnakeNode.cord = moveSnakeNode({ cord, dir: newDir });
   snake.unshift(newSnakeNode);

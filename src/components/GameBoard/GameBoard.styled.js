@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { FOOD_TYPES } from "../../utils/Food";
 
 export const StyledGameBord = styled("div")`
   display: flex;
@@ -13,12 +14,16 @@ export const StyledBordCell = styled("div")`
   width: 60px;
   height: 60px;
   border: solid 1px blue;
-  ${(p) => {
-    switch (p.type) {
+  ${({ type }) => {
+    switch (type) {
       case "snake":
         return "background: green; border-radius: 100%; border-color: transparent";
-      case "food":
+      case FOOD_TYPES.common.type:
         return "background: red;";
+      case FOOD_TYPES.rare.type:
+        return "background: yellow;";
+      case FOOD_TYPES.legend.type:
+        return "background: cyan;";
     }
   }}
 `;

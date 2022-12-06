@@ -4,8 +4,9 @@ export const ModalWindowWraper = ({ children, closeWindow = () => {} }) => {
   return (
     <StyledBackdrop
       onClick={(e) => {
-        console.log(e.currentTarget);
-        // closeWindow();
+        if (e.target === e.currentTarget) {
+          closeWindow();
+        }
       }}
     >
       <StyledModalWindow>{children}</StyledModalWindow>

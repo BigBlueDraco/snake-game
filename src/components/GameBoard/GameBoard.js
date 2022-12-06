@@ -16,6 +16,7 @@ import {
 } from "./GameBoard.styled";
 import { ModalWindowWraper } from "../modalWindowWraper/modalWindowWraper";
 import { PauseWindow } from "../PauseWindow/PauseWindow";
+import { GameOverWindow } from "../GameOverWindow/GameOverWindow";
 
 const BOARD_SIZE = 10;
 const BASE_SPEED = 400;
@@ -80,7 +81,6 @@ export const GameBoard = () => {
     ) {
       newFood = spawnFood();
     }
-    console.log(newFood);
     return newFood;
   };
   useEffect(() => {
@@ -95,13 +95,11 @@ export const GameBoard = () => {
     setSnake([...START_SNAKE]);
     setDirection(BASE_DIRECTION);
     setScore(0);
+    setIsGameOver(false);
   };
   useEffect(() => {
     if (snakeEatItSeff(snake) || snakeISOoutOfBounce(snake, BOARD_SIZE)) {
-      setSnake([...START_SNAKE]);
-      setDirection(BASE_DIRECTION);
-      setScore(0);
-      setIsPaused(true);
+      setIsGameOver(true);
       return;
     }
     if (
@@ -116,11 +114,10 @@ export const GameBoard = () => {
 
   useInterval(
     () => {
-      console.log("interval");
       setSnake((prevSnake) => moveSnake(prevSnake, dir));
       speedController();
     },
-    isPaused ? null : speed
+    isPaused || isGameOver ? null : speed
   );
 
   const cellType = (columnIndex, rowIndex) => {
@@ -130,7 +127,7 @@ export const GameBoard = () => {
       )
     )
       return "snake";
-    if (food.x === columnIndex && food.y === rowIndex) return "food";
+    if (food.x === columnIndex && food.y === rowIndex) return food.type;
   };
 
   const moveControl = (e) => {
@@ -158,6 +155,7 @@ export const GameBoard = () => {
           }}
         />
       )}
+      {isGameOver && <GameOverWindow restart={reset}>{score}</GameOverWindow>}
       <ScoreBar>{score}</ScoreBar>
       <button onClick={tonglePause}>Pause</button>
       <StyledGameBord>
