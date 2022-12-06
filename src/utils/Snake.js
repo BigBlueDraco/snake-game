@@ -1,4 +1,4 @@
-const createSbakeNode = (x, y, direction = "left") => {
+const createSbakeNode = (x, y, direction = "") => {
   const cord = { x, y };
   const dir = direction;
   return { cord, dir };
@@ -23,12 +23,18 @@ const moveSnakeNode = (snakeNode) => {
 };
 
 export const moveSnake = (snake = [], direction) => {
+  if (!direction) {
+    return snake;
+  }
   return snake.map((snakeNode, index) => {
-    if (index >= snake.length - 1) {
+    if (index === snake.length - 1) {
       snakeNode.dir = direction;
       snakeNode.cord = moveSnakeNode(snakeNode);
       return snakeNode;
     }
+    snakeNode.dir = snake[index + 1].dir;
+    snakeNode.cord = moveSnakeNode(snakeNode);
+    return snakeNode;
   });
 };
 

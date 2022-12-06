@@ -7,6 +7,7 @@ import {
 } from "./GameBoard.styled";
 
 const directionFromKey = (key = "") => {
+  console.log(key);
   switch (key.toString().toLowerCase()) {
     case "w":
       return "up";
@@ -27,6 +28,8 @@ const directionFromKey = (key = "") => {
       return "left";
     case "arrowleft":
       return "left";
+    default:
+      return "";
   }
 };
 
@@ -45,18 +48,22 @@ const createBoard = (BOARD_SIZE) => {
 
 export const GameBoard = () => {
   const [board, setBoard] = useState(createBoard(10));
-  // const [snake, setSnake] = useState(new Snake(0, 0));
-  console.log(moveSnake([{ cord: { x: 0, y: 0 }, dir: "left" }], "down"));
-  const [food, setFood] = useState({ x: 5, y: 0 });
+  const [snake, setSnake] = useState([
+    { cord: { x: 0, y: 0 }, dir: "down" },
+    { cord: { x: 0, y: 1 }, dir: "down" },
+    { cord: { x: 0, y: 2 }, dir: "down" },
+    { cord: { x: 0, y: 3 }, dir: "down" },
+    { cord: { x: 0, y: 4 }, dir: "down" },
+  ]);
 
-  // useEffect(() => {
-  //   document.body.style.overflow = "hidden";
-  //   window.addEventListener("keydown", handleMove);
-  //   return () => {
-  //     window.removeEventListener("keydown", handleMove);
-  //     document.body.style.overflow = "auto";
-  //   };
-  // });
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleMove);
+    return () => {
+      window.removeEventListener("keydown", handleMove);
+      document.body.style.overflow = "auto";
+    };
+  });
   // useEffect(() => {
   //   if (snake.head.val.x === food.x && snake.head.val.y === food.y) {
   //     const newTailCell = snake.grow();
@@ -67,18 +74,19 @@ export const GameBoard = () => {
   // }, [snake]);
 
   const cellType = (columnIndex, rowIndex) => {
-    // if () return "snake";
+    if (
+      snake.some(
+        (elem) => elem.cord.x === columnIndex && elem.cord.y === rowIndex
+      )
+    )
+      return "snake";
     // if (food.x === columnIndex && food.y === rowIndex) return "food";
   };
 
   const handleMove = (e) => {
-    // const direction = directionFromKey(e.key);
-    // const { x, y } = snake.move(direction);
-    // const newSnake = new Snake(x, y);
-    // const newSnakeCell = new Set(snakeCells);
-    // snakeCells.delete(`${snake.head.val.x}${snake.head.val.y}`);
-    // snakeCells.add(`${newSnake.head.val.x}${newSnake.head.val.y}`);
-    // setSnake(newSnake);
+    const direction = directionFromKey(e.key);
+    console.log(snake);
+    setSnake(() => moveSnake(snake, direction));
   };
 
   return (
