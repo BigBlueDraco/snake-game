@@ -6,7 +6,7 @@ import {
   snakeISOoutOfBounce,
 } from "./snake";
 import { createBoard } from "./board";
-import { directionFromKey } from "./directionFromKey";
+import { directionFromKey } from "./direction";
 
 export {
   createFood,

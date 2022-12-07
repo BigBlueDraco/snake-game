@@ -1,8 +1,5 @@
-const createSbakeNode = (x, y, direction = "") => {
-  const cord = { x, y };
-  const dir = direction;
-  return { cord, dir };
-};
+import { oportunityDirection } from "./direction";
+
 const moveSnakeNode = (snakeNode) => {
   const {
     cord: { x, y },
@@ -22,20 +19,6 @@ const moveSnakeNode = (snakeNode) => {
   }
 };
 
-const oportunityDirection = (direction) => {
-  switch (direction.toString().toLowerCase()) {
-    case "up":
-      return "down";
-    case "down":
-      return "up";
-    case "left":
-      return "right";
-    case "right":
-      return "left";
-    default:
-      return direction;
-  }
-};
 export const moveSnake = (snake = [], direction) => {
   if (!direction) {
     return snake;
@@ -71,11 +54,3 @@ export const snakeISOoutOfBounce = (snake = [], bordSize) => {
     ({ cord: { x, y } }) => x >= bordSize || y >= bordSize || x < 0 || y < 0
   );
 };
-
-export class Snake {
-  constructor(x, y) {
-    this.value = createSbakeNode(x, y);
-  }
-
-  grow() {}
-}
