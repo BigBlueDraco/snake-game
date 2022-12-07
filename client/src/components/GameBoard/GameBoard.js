@@ -16,6 +16,7 @@ import {
 } from "./GameBoard.styled";
 import { PauseWindow } from "../PauseWindow/PauseWindow";
 import { GameOverWindow } from "../GameOverWindow/GameOverWindow";
+import { HelloWindow } from "../HelloWindow/HelloWindow";
 
 const BOARD_SIZE = 10;
 const BASE_SPEED = 400;
@@ -72,6 +73,7 @@ export const GameBoard = () => {
   const [speed, setSpeed] = useState(BASE_SPEED);
   const [isPaused, setIsPaused] = useState(true);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isFirstGame, setIsFirstGame] = useState(true);
   const spawnFood = () => {
     const newSnake = moveSnake();
     let newFood = createFood(BOARD_SIZE);
@@ -154,7 +156,15 @@ export const GameBoard = () => {
         Pause
       </button>
       <StyledGameBord>
-        {isPaused && (
+        {isFirstGame && (
+          <HelloWindow
+            start={() => {
+              setIsFirstGame(false);
+              tonglePause();
+            }}
+          />
+        )}
+        {isPaused && !isFirstGame && (
           <PauseWindow
             closeWindow={tonglePause}
             restart={() => {
