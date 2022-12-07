@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FOOD_TYPES } from "../../utils/food";
+import { FOOD_TYPES } from "../../utils/constants/foodTypes";
 
 export const StyledGameWraper = styled("div")`
   display: flex;

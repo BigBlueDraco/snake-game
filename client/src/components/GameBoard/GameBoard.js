@@ -9,8 +9,13 @@ import {
   snakeISOoutOfBounce,
   directionFromKey,
   createBoard,
-} from "../../utils/index";
+} from "../../utils/game/index";
 
+import {
+  BOARD_SIZE,
+  BASE_SPEED,
+  BASE_DIRECTION,
+} from "../../utils/constants/gameConfig";
 import { TopBar } from "../TopBar/TopBar";
 import { PauseWindow } from "../PauseWindow/PauseWindow";
 import { GameOverWindow } from "../GameOverWindow/GameOverWindow";
@@ -21,10 +26,6 @@ import {
   StyledGameBord,
   StyledGameWraper,
 } from "./GameBoard.styled";
-
-const BOARD_SIZE = 10;
-const BASE_SPEED = 400;
-const BASE_DIRECTION = "down";
 
 export const GameBoard = () => {
   const START_SNAKE = [
@@ -50,7 +51,6 @@ export const GameBoard = () => {
     }
     return newFood;
   };
-
   const cellType = (columnIndex, rowIndex) => {
     if (
       snake.some(
@@ -61,11 +61,12 @@ export const GameBoard = () => {
     if (food.x === columnIndex && food.y === rowIndex) return food.type;
   };
 
-  const moveControl = (e) => {
+  const moveController = (e) => {
     const direction = directionFromKey(e.key);
-    direction && setDirection(direction);
+    direction &&
+      !(isPaused || isFirstGame || isGameOver) &&
+      setDirection(direction);
   };
-
   const speedController = () => {
     const dificulty = BASE_SPEED - Math.round(score / 100) * 100;
     setSpeed(dificulty);
@@ -74,7 +75,6 @@ export const GameBoard = () => {
   const tonglePause = () => {
     !isGameOver && setIsPaused((prev) => !prev);
   };
-
   const reset = () => {
     setSnake([...START_SNAKE]);
     setDirection(BASE_DIRECTION);
@@ -98,9 +98,9 @@ export const GameBoard = () => {
   }, [snake, food]);
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", moveControl);
+    window.addEventListener("keydown", moveController);
     return () => {
-      window.removeEventListener("keydown", moveControl);
+      window.removeEventListener("keydown", moveController);
       document.body.style.overflow = "auto";
     };
   });

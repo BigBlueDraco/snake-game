@@ -1,19 +1,6 @@
 import { getRandomInt } from "./random.js";
+import { FOOD_TYPES } from "../constants/foodTypes.js";
 
-export const FOOD_TYPES = {
-  common: {
-    type: "common",
-    cost: 1,
-  },
-  rare: {
-    type: "rare",
-    cost: 5,
-  },
-  legend: {
-    type: "legend",
-    cost: 10,
-  },
-};
 const getRandomType = () => {
   const random = getRandomInt(100);
   if (random <= 50) {
