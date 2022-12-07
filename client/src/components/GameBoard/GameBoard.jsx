@@ -26,6 +26,7 @@ import {
   StyledGameBord,
   StyledGameWraper,
 } from "./GameBoard.styled";
+import { oportunityDirection } from "../../utils/game/direction";
 
 export const GameBoard = () => {
   const START_SNAKE = [
@@ -63,6 +64,8 @@ export const GameBoard = () => {
 
   const moveController = (e) => {
     const direction = directionFromKey(e.key);
+    if (direction === oportunityDirection(dir)) return;
+
     direction &&
       !(isPaused || isFirstGame || isGameOver) &&
       setDirection(direction);
