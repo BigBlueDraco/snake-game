@@ -9,12 +9,7 @@ import {
 
 import useInterval from "use-interval";
 import { ScoreBar } from "../ScoreBar/ScoreBar";
-import {
-  StyledBordCell,
-  StyledGameBord,
-  StyledSnakeCell,
-} from "./GameBoard.styled";
-import { ModalWindowWraper } from "../modalWindowWraper/modalWindowWraper";
+import { StyledBordCell, StyledGameBord } from "./GameBoard.styled";
 import { PauseWindow } from "../PauseWindow/PauseWindow";
 import { GameOverWindow } from "../GameOverWindow/GameOverWindow";
 
@@ -73,6 +68,8 @@ export const GameBoard = () => {
   const [speed, setSpeed] = useState(BASE_SPEED);
   const [isPaused, setIsPaused] = useState(true);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [data, setData] = useState([]);
+  console.log(data);
   const spawnFood = () => {
     const newSnake = moveSnake();
     let newFood = createFood(BOARD_SIZE);
