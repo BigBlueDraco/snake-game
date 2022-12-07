@@ -7,6 +7,7 @@ import {
   snakeISOoutOfBounce,
 } from "../../utils/Snake";
 
+import { TopBar } from "../TopBar/TopBar";
 import useInterval from "use-interval";
 import { ScoreBar } from "../ScoreBar/ScoreBar";
 import {
@@ -142,19 +143,12 @@ export const GameBoard = () => {
   };
 
   const tonglePause = () => {
-    setIsPaused((prev) => !prev);
+    !isGameOver && setIsPaused((prev) => !prev);
   };
 
   return (
     <StyledGameWraper>
-      <ScoreBar>{score}</ScoreBar>
-      <button
-        onClick={() => {
-          !isGameOver && tonglePause();
-        }}
-      >
-        Pause
-      </button>
+      <TopBar score={score} pause={tonglePause} />
       <StyledGameBord>
         {isFirstGame && (
           <HelloWindow
@@ -173,7 +167,8 @@ export const GameBoard = () => {
             }}
           />
         )}
-        {isGameOver && <GameOverWindow restart={reset}>{score}</GameOverWindow>}
+        {isGameOver && <GameOverWindow restart={reset} score={+score} />}
+
         {board.map((row, columnIndex) => (
           <div key={columnIndex}>
             {row.map((cellValue, rowIndex) => (

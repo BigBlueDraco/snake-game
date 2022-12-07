@@ -4,14 +4,17 @@ import { ModalWindowWraper } from "../modalWindowWraper/modalWindowWraper";
 import { StyledInput } from "./HelloWindow.styled";
 
 export const HelloWindow = ({ start }) => {
-  const [name, setName] = useState(localStorage.getItem("name"));
+  const [name, setName] = useState(sessionStorage.getItem("name"));
   const saveName = (e) => {
     e.preventDefault();
     const inputedName = e.target.name.value;
-    if (!inputedName && !name) {
+    if(name){
+      start();
+    }
+    if (!inputedName) {
       return;
     }
-    localStorage.setItem("name", inputedName);
+    sessionStorage.setItem("name", inputedName);
     start();
   };
   return (
