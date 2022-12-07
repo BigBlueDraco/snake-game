@@ -16,8 +16,8 @@ export const StyledBordCell = styled("div")`
   align-content: center;
   justify-content: center;
   align-items: center;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border: solid 1px blue;
   ${({ type }) => {
     switch (type) {

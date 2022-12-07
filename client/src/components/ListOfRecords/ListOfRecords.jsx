@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { fetchTopGames } from "../../services/SnakeAPI";
 import {
-  StyledTable,
+  StyledTableColumn,
   StyledTableRow,
   StyledTableCell,
+  StyledTable,
 } from "./ListOfRecords.styled";
 
 export const ListOfRecords = () => {
@@ -16,19 +17,19 @@ export const ListOfRecords = () => {
     fetch();
   });
   return (
-    <>
-      <StyledTable>
+    <StyledTable>
+      <StyledTableColumn>
         <StyledTableRow>
           <StyledTableCell>Name</StyledTableCell>
         </StyledTableRow>
         {list[0] &&
-          list.map(({ id, name, score }) => (
+          list.map(({ id, name }) => (
             <StyledTableRow key={id}>
-              <StyledTableCell>NAME: {name}</StyledTableCell>
+              <StyledTableCell>{name}</StyledTableCell>
             </StyledTableRow>
           ))}
-      </StyledTable>
-      <StyledTable>
+      </StyledTableColumn>
+      <StyledTableColumn>
         <StyledTableRow>
           <StyledTableCell>Score</StyledTableCell>
         </StyledTableRow>
@@ -38,7 +39,7 @@ export const ListOfRecords = () => {
               <StyledTableCell>{score}</StyledTableCell>
             </StyledTableRow>
           ))}
-      </StyledTable>
-    </>
+      </StyledTableColumn>
+    </StyledTable>
   );
 };
