@@ -13,6 +13,7 @@ export const StyledTableColumn = styled("ul")`
 `;
 export const StyledTableRow = styled("li")`
   display: flex;
+  padding: 10px 20px;
   border: 1px solid red;
 `;
 export const StyledTableCell = styled("p")`

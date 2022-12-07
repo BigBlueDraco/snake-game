@@ -2,18 +2,21 @@ import { ModalWindowWraper } from "../modalWindowWraper/modalWindowWraper";
 import { StyledGameOverTitle } from "./GameOverWindow.styled";
 import { Button } from "../Button/Button";
 import { postGame } from "../../services/SnakeAPI";
-import {useEffect} from 'react'
+import { useEffect } from "react";
+import { VscDebugRestart } from "react-icons/vsc";
 
 export const GameOverWindow = ({ restart = () => {}, score }) => {
-   useEffect(()=>{
+  useEffect(() => {
     const name = sessionStorage.getItem("name");
-    postGame({name, score: +score});
-   })
+    postGame({ name, score: +score });
+  });
   return (
-    <ModalWindowWraper >
+    <ModalWindowWraper>
       <StyledGameOverTitle>GAME OVER</StyledGameOverTitle>
       <p>{score}</p>
-      <Button onClick={restart}>click to restart</Button>
+      <Button onClick={restart}>
+        <VscDebugRestart />
+      </Button>
     </ModalWindowWraper>
   );
 };

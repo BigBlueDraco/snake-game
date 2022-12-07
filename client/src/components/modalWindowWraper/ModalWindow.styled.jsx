@@ -22,4 +22,7 @@ export const StyledModalWindow = styled("div")`
   border-radius: 20px;
   background: #fff;
   padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useInterval from "use-interval";
 
 import {
@@ -42,7 +42,7 @@ export const GameBoard = () => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isFirstGame, setIsFirstGame] = useState(true);
 
-  const spawnFood = () => {
+  const spawnFood = useCallback(() => {
     let newFood = createFood(BOARD_SIZE);
     if (
       snake.some(({ cord: { x, y } }) => x === newFood.x && y === newFood.y)
@@ -50,7 +50,7 @@ export const GameBoard = () => {
       newFood = spawnFood();
     }
     return newFood;
-  };
+  }, [snake]);
   const cellType = (columnIndex, rowIndex) => {
     if (
       snake.some(
@@ -95,7 +95,7 @@ export const GameBoard = () => {
       setScore((prev) => prev + food.cost);
       setFood(spawnFood());
     }
-  }, [snake, food]);
+  }, [snake, food, spawnFood]);
   useEffect(() => {
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", moveController);
