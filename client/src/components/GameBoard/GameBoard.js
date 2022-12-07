@@ -42,7 +42,6 @@ export const GameBoard = () => {
   const [isFirstGame, setIsFirstGame] = useState(true);
 
   const spawnFood = () => {
-    const newSnake = moveSnake();
     let newFood = createFood(BOARD_SIZE);
     if (
       snake.some(({ cord: { x, y } }) => x === newFood.x && y === newFood.y)
@@ -96,7 +95,7 @@ export const GameBoard = () => {
       setScore((prev) => prev + food.cost);
       setFood(spawnFood());
     }
-  }, [snake]);
+  }, [snake, food]);
   useEffect(() => {
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", moveControl);

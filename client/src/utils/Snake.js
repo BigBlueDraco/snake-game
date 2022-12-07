@@ -32,6 +32,8 @@ const oportunityDirection = (direction) => {
       return "right";
     case "right":
       return "left";
+    default:
+      return direction;
   }
 };
 export const moveSnake = (snake = [], direction) => {

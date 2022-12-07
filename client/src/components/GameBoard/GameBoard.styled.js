@@ -29,6 +29,8 @@ export const StyledBordCell = styled("div")`
         return "background: yellow; border-radius: 40%;";
       case FOOD_TYPES.legend.type:
         return "background: cyan; border-radius: 50%;";
+      default:
+        return FOOD_TYPES.common.type;
     }
   }}
 `;
