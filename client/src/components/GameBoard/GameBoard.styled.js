@@ -1,9 +1,14 @@
 import styled from "styled-components";
 import { FOOD_TYPES } from "../../utils/Food";
 
+export const StyledGameWraper = styled("div")`
+  display: flex;
+  flex-direction: column;
+`;
 export const StyledGameBord = styled("div")`
   display: flex;
   border: solid 30px blue;
+  position: relative;
 `;
 
 export const StyledBordCell = styled("div")`

@@ -9,7 +9,11 @@ import {
 
 import useInterval from "use-interval";
 import { ScoreBar } from "../ScoreBar/ScoreBar";
-import { StyledBordCell, StyledGameBord } from "./GameBoard.styled";
+import {
+  StyledBordCell,
+  StyledGameBord,
+  StyledGameWraper,
+} from "./GameBoard.styled";
 import { PauseWindow } from "../PauseWindow/PauseWindow";
 import { GameOverWindow } from "../GameOverWindow/GameOverWindow";
 
@@ -68,8 +72,6 @@ export const GameBoard = () => {
   const [speed, setSpeed] = useState(BASE_SPEED);
   const [isPaused, setIsPaused] = useState(true);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [data, setData] = useState([]);
-  console.log(data);
   const spawnFood = () => {
     const newSnake = moveSnake();
     let newFood = createFood(BOARD_SIZE);
@@ -142,20 +144,26 @@ export const GameBoard = () => {
   };
 
   return (
-    <>
-      {isPaused && (
-        <PauseWindow
-          closeWindow={tonglePause}
-          restart={() => {
-            reset();
-            tonglePause();
-          }}
-        />
-      )}
-      {isGameOver && <GameOverWindow restart={reset}>{score}</GameOverWindow>}
+    <StyledGameWraper>
       <ScoreBar>{score}</ScoreBar>
-      <button onClick={tonglePause}>Pause</button>
+      <button
+        onClick={() => {
+          !isGameOver && tonglePause();
+        }}
+      >
+        Pause
+      </button>
       <StyledGameBord>
+        {isPaused && (
+          <PauseWindow
+            closeWindow={tonglePause}
+            restart={() => {
+              reset();
+              tonglePause();
+            }}
+          />
+        )}
+        {isGameOver && <GameOverWindow restart={reset}>{score}</GameOverWindow>}
         {board.map((row, columnIndex) => (
           <div key={columnIndex}>
             {row.map((cellValue, rowIndex) => (
@@ -167,6 +175,6 @@ export const GameBoard = () => {
           </div>
         ))}
       </StyledGameBord>
-    </>
+    </StyledGameWraper>
   );
 };
