@@ -1,4 +1,4 @@
-import { getRandomInt } from "./Random.js";
+import { getRandomInt } from "./random.js";
 
 export const FOOD_TYPES = {
   common: {
