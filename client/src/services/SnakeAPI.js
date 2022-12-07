@@ -1,11 +1,12 @@
 import axios from "axios";
 
+const BASE_URL = "https://snake-game-production.up.railway.app/api/";
 export const fetchTopGames = async () => {
-  const res = await axios.get("http://localhost:8080/api/games/top");
+  const res = await axios.get(`${BASE_URL}games/top`);
   return res.data;
 };
 export const postGame = async ({ name, score }) => {
-  await axios.post("http://localhost:8080/api/games/", {
+  await axios.post(`${BASE_URL}games`, {
     name,
     score,
   });

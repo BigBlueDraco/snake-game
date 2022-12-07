@@ -9,4 +9,5 @@ export const StyledForm = styled("form")`
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  width: 300px;
 `;

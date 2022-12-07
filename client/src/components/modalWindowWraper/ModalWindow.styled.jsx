@@ -18,7 +18,7 @@ export const StyledModalWindow = styled("div")`
   color: #000;
   position: relative;
   z-index: 100;
-  width: 200px;
+  // width: 200px;
   border-radius: 20px;
   background: #fff;
   padding: 20px 20px;
