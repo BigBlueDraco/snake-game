@@ -76,7 +76,8 @@ export const GameBoard = () => {
   };
 
   const tonglePause = () => {
-    !isGameOver && setIsPaused((prev) => !prev);
+    if (isGameOver || isFirstGame) return;
+    setIsPaused((prev) => !prev);
   };
   const reset = () => {
     setSnake([...START_SNAKE]);
