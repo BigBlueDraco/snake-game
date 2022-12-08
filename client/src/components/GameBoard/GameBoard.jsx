@@ -76,7 +76,7 @@ export const GameBoard = () => {
   };
 
   const tonglePause = () => {
-    if (isGameOver || isFirstGame) return;
+    if (isGameOver) return;
     setIsPaused((prev) => !prev);
   };
   const reset = () => {
