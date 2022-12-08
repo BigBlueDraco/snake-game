@@ -114,7 +114,7 @@ export const GameBoard = () => {
       setSnake((prevSnake) => moveSnake(prevSnake, dir));
       speedController();
     },
-    isPaused || isGameOver ? null : speed
+    isPaused || isGameOver || isFirstGame ? null : speed
   );
 
   return (
