@@ -15,7 +15,7 @@ export const ListOfRecords = () => {
   };
   useEffect(() => {
     fetch();
-  }, []);
+  });
   return (
     <StyledTable>
       <StyledTableColumn>
